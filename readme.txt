@@ -1,8 +1,3 @@
-Git is a version control systrm.
-Git is free software.
+2017/4/8:
 
-Version 2.
-
-Version 3.
-
-Version 4.
+This is a git built by pkuzhd to develop raspberrypi software.
