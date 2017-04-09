@@ -19,7 +19,7 @@ while True:
             if event.key == K_f:
                 Fullscreen = not Fullscreen
                 if Fullscreen:
-                    screen = pygame.display.set_mode((1366, 768), FULLSCREEN | HWSURFACE, 32)
+                    screen = pygame.display.set_mode((1024, 768), FULLSCREEN | HWSURFACE, 32)
                 else:
                     screen = pygame.display.set_mode((640, 480), 0, 32)
         if event.type == KEYDOWN:
@@ -27,7 +27,7 @@ while True:
                 exit()
 
     if Fullscreen:
-        screen.blit(background, (363,144))
+        screen.blit(background, (192,144))
     else:
         screen.blit(background, (0,0))
     
