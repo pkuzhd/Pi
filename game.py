@@ -71,8 +71,8 @@ def main():
             else:
                 screen.fill((255, 255, 255))
 
-            string_audio_data = stream.read(NUM_SAMPLES)
-            k = max(struct.unpack('1000h', string_audio_data))
+            # string_audio_data = stream.read(NUM_SAMPLES)
+            # k = max(struct.unpack('1000h', string_audio_data))
             # print(k)
             
 
@@ -85,6 +85,9 @@ def main():
             #         dxk.jump(2.5)
             #         if k > 20000:
             #             dxk.fly()
+            time_passed = clock.tick()
+            time_passed_seconds = time_passed / 1000.0
+            t = time_passed_seconds * 100
             if fall:
                 if map_queue_1[5]==1 and block_s < -78:
                     dxk.stop()
@@ -94,9 +97,8 @@ def main():
                 else:
                     dxk.stop()
 
-            time_passed = clock.tick()
-            time_passed_seconds = time_passed / 1000.0
-            t = time_passed_seconds * 100
+            
+            
             if not dxk.can_jump and not fall:
                 h -= dxk.speed_y * t
                 dxk.speed_y -= dxk.g * t
@@ -105,13 +107,17 @@ def main():
                         dxk.can_jump = True
                         h = screen_size[1]-dxk.height-100
             if h >= screen_size[1]-dxk.height-100 - 0.000001:
-                if map_queue_1[4]==0 and block_s < -22 and block_s > -78:
-                    fall = True
-
-            print(map_queue_1, block_s, fall)
+                
+                if map_queue_1[4]==0: 
+                    if block_s < -22 and block_s > -78:
+                        fall = True
+                    elif map_queue_1[5]==0 and block_s <=-78:
+                        fall = True
+                    elif map_queue_1[3]==0 and block_s > -22:
+                        fall = True
             screen.blit(dxk.image, (screen_size[0]/2-dxk.width/2, h))
 
-            block_s += dxk.speed_x
+            block_s += dxk.speed_x * t / 2
             if block_s <= -100.:
                 map_queue_1.pop(0)
                 map_queue_1.append(map_queue_2.pop(0))
@@ -125,8 +131,6 @@ def main():
                 rand = random.randrange(6) % 3
                 for i in map_list[rand]:
                     map_queue_2.append(i)
-
-
             pygame.display.update()
 
 if __name__ == '__main__':
