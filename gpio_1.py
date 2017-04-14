@@ -49,6 +49,8 @@ def main():
     SAKS.ledrow.off()
 
     SAKS.digital_display.show("2.3.3.3.")
+    time.sleep(1)
+    SAKS.digital_display.off()
  
 try:
     init()
