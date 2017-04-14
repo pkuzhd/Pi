@@ -28,11 +28,27 @@ def writeByte(data):
         writeBit((data >> i) & 0x01)
     GPIO.output(STCP, GPIO.LOW)
     GPIO.output(STCP, GPIO.HIGH)
-
+ 
 def main():
-    b = SAKS.buzzer #feng ming qi
+    b = SAKS.buzzer #蜂鸣器
     b.keep(1)
-    alloff = list((
+    alloff = list((False,) * 8)
+    onone = [alloff[:] for i in range(8)]
+    for i in range(8):
+        onone[i][i] = True
+    nums = {0:'1000', 1:'2000', 2:'0100', 3:'0200', 4:'0010', 5:'0020', 6:'0001', 7:'0002' }
+
+    SAKS.ledrow.off()
+    time.sleep(3)
+    SAKS.ledrow.set_row([True, False, True, False, True, False, True, False])
+    time.sleep(2)
+    for i in range(8):
+        SAKS.digital_display.show(nums[i])
+        SAKS.ledrow.set_row(onone[i])
+        time.sleep(0.5)
+    SAKS.ledrow.off()
+
+    SAKS.digital_display.show("2.3.3.3.")
  
 try:
     init()
@@ -43,8 +59,11 @@ try:
            time.sleep(0.1)
         #writeByte(0xff)
         #time.sleep(0.1)
+        if __name__ == '__main__':
+            main()
  
 except KeyboardInterrupt:
     print("except")
     writeByte(0x00)
     GPIO.cleanup()
+ 
