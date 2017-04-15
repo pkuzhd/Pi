@@ -19,7 +19,8 @@ def main():
     NUM_SAMPLES = 1000
     stream = pa.open(format=pyaudio.paInt16, channels=1, rate=SAMPLING_RATE, input=True, frames_per_buffer=NUM_SAMPLES)
     #初始化声音输入
-
+    score = 0
+    score_max = 0
     while True:
         #游戏总循环
         dxk = DXK("dxk1.png")
@@ -40,6 +41,7 @@ def main():
 
         block_s = 0.
         fall = False
+        
         while True:
             #当前游戏循环
 
@@ -72,20 +74,20 @@ def main():
             else:
                 screen.fill((255, 255, 255))
 
-            # string_audio_data = stream.read(NUM_SAMPLES)
-            # k = max(struct.unpack('1000h', string_audio_data))
-            # print(k)
+            string_audio_data = stream.read(NUM_SAMPLES)
+            k = max(struct.unpack('1000h', string_audio_data))
+            print(k)
             
 
 
-            # if k <= 2000:
-            #     dxk.stop()
-            # else:
-            #     dxk.move()
-            #     if not fall and k > 8000:
-            #         dxk.jump(2.5)
-            #         if k > 20000:
-            #             dxk.fly()
+            if k <= 2000:
+                dxk.stop()
+            else:
+                dxk.move()
+                if not fall and k > 8000:
+                    dxk.jump(2.5)
+                    if k > 20000:
+                        dxk.fly()
             time_passed = clock.tick()
             time_passed_seconds = time_passed / 1000.0
             t = time_passed_seconds * 100
@@ -127,12 +129,22 @@ def main():
                 if map_queue_1[i]!=0:
                     screen.blit(block.image, (i * 100. + block_s, block.y))
 
+            # if block_s>=-1.:
+            #     print('\t',block_s)
+            #     if map_queue_1[3] == 0:
+            #         score += 1
+            #         print(score)
             
             while len(map_queue_2) < 2:
                 rand = random.randrange(6) % 3
                 for i in map_list[rand]:
                     map_queue_2.append(i)
             pygame.display.update()
+
+        # if score>score_max:
+        #     score_max = score
+        # print(score, score_max)
+        # score = 0
 
 if __name__ == '__main__':
     main()
